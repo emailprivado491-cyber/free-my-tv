@@ -2664,6 +2664,13 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         long up = SystemClock.uptimeMillis();
         if (animatedBanner != null) {
             float amount = (night > 0.001f ? 0.48f : 0.16f) + tone(0.18f, 0.12f) * Ui.clamp(drawer.value);
+            // Movie/GIF frames may contain transparent or partial pixels. Fill the layer first so Android's
+            // invalidation/clear pass can never expose the window's transparent (black) background between frames.
+            fill.setShader(null);
+            fill.setColorFilter(null);
+            fill.setAlpha(255);
+            fill.setColor(blend(0xFFF5F5F7, 0xFF0B0B0D, night));
+            c.drawRect(screen, fill);
             animatedBanner.setColorFilter(veil(Math.min(0.82f, amount), night > 0.001f ? 0xFF000000 : 0xFFFFFFFF));
             animatedBanner.draw(c, screen, up);
             animatedBanner.setColorFilter(null);
