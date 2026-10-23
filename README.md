@@ -128,7 +128,9 @@ To use an animated banner, copy a lightweight looping GIF to both `app/assets/` 
 `background_banner=background.gif` in `config.properties`. Android TV renders the GIF directly and the LG/Tizen web
 builds use the same file as a full-screen looping background. The image is center-cropped, dimmed at night and covered
 by the existing readability veil. If the file is missing or unreadable, the launcher silently keeps its normal
-gradient/recommendation background.
+gradient/recommendation background. On Android, the banner is rejected if it is larger than 8 MB, exceeds 1920×1080,
+or lasts longer than 10 seconds; frames are capped at approximately 30 fps. These are hard safety limits, not a target:
+for older TVs, use a 960×540 or 1280×720 GIF, 12–24 fps, and preferably under 5 MB.
 
 ### The TMDB key
 
