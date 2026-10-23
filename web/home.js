@@ -51,6 +51,30 @@
   }
 
   var stage = $('stage'), body = document.body;
+  function setupAnimatedBanner() {
+    var name = window.CONFIG && window.CONFIG.backgroundBanner;
+    if (!name) return;
+    name = String(name).replace(/^\/+/, '');
+    var sky = $('sky'), media = $('banner');
+    if (!media) return;
+    if (/\.gif$/i.test(name)) {
+      var image = document.createElement('img');
+      image.id = 'banner';
+      image.className = 'banner';
+      image.alt = '';
+      media.parentNode.replaceChild(image, media);
+      media = image;
+      media.onload = function () { setClass(media, 'ready', true); setClass(sky, 'banner-on', true); };
+      media.onerror = function () { setClass(sky, 'banner-on', false); };
+      media.src = name;
+    } else {
+      media.oncanplay = function () { setClass(media, 'ready', true); setClass(sky, 'banner-on', true); media.play().catch(function () {}); };
+      media.onerror = function () { setClass(media, 'ready', false); setClass(sky, 'banner-on', false); };
+      media.src = name;
+      media.load();
+    }
+  }
+  setupAnimatedBanner();
 
   /** The 1920 × 1080 stage fills the window (on the TV it already is 1920 × 1080). */
   function fit() {

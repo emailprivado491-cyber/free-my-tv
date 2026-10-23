@@ -54,6 +54,12 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 /* MARK: - Background: the first pick's photo, very blurred and almost white (almost black at night). */
 
 #sky { background: #EBEBEF; }
+#sky .banner { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; z-index: 0; -webkit-transition: opacity 0.8s; transition: opacity 0.8s; }
+#sky .banner.ready { opacity: 1; }
+#sky.banner-on .grad { opacity: 0; }
+#sky.banner-on .veil { background: rgba(245, 245, 247, 0.26); }
+#sky.banner-on .night { opacity: 0; }
+.night #sky.banner-on .veil { background: rgba(11, 11, 13, 0.58); }
 #sky .grad { position: absolute; left: 0; top: 0; width: 100%; height: 100%; -webkit-transition: opacity 2s; transition: opacity 2s; }
 #sky .day { background: -webkit-linear-gradient(top, #F5F5F7, #E2E2E7); background: linear-gradient(#F5F5F7, #E2E2E7); }
 #sky .night { background: -webkit-linear-gradient(top, #1C1C1E, #0B0B0D); background: linear-gradient(#1C1C1E, #0B0B0D); opacity: 0; }

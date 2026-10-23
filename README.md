@@ -118,8 +118,17 @@ The first values come from `config.properties`, created by the first build (Goog
 | `temperature` | `C`, `F` or `auto` | `auto` |
 | `disable_assistant` | Also turn off Google Assistant | `false` |
 | `hide_services` | Streaming services to leave out of the picks even when their app is on the TV (`netflix`, `prime`, `disney`…), comma separated; for apps the TV ships that you don't subscribe to. Google TV only | empty |
+| `background_banner` | Optional local animated background filename. Use a GIF with the same name in `app/assets/` and `web/` | empty |
 
 Changed something? Run `./build.sh` and install again. Keep `freemytv.keystore`: updates are signed with it.
+
+### Animated background
+
+To use an animated banner, copy a lightweight looping GIF to both `app/assets/` and `web/`, then set for example
+`background_banner=background.gif` in `config.properties`. Android TV renders the GIF directly and the LG/Tizen web
+builds use the same file as a full-screen looping background. The image is center-cropped, dimmed at night and covered
+by the existing readability veil. If the file is missing or unreadable, the launcher silently keeps its normal
+gradient/recommendation background.
 
 ### The TMDB key
 
