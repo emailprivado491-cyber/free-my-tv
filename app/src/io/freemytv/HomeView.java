@@ -655,7 +655,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         boolean heroFading = tickHeroFade(up);
         boolean bgFading = tickBackgroundFade(up);
         boolean nightMoving = tickNight(up);
-        if (animatedBanner != null) sky.invalidate();
+        if (animatedBanner != null && animatedBanner.shouldDraw(up)) sky.invalidate();
 
         if (drawerMoving || sheetMoving || motionDirty) updateMotion();
         // Opening and closing the drawer only moves the cached layers: redrawing the glass on every frame made the TV
@@ -681,12 +681,18 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             if (!picksOn()) heroLayer.invalidate();
         }
 
-        // Busy: something is moving, or the sheet or the drawer is open.
-        boolean busy = animatedBanner != null || tilesMoving || statusMoving || heroMoving || drawerItemsMoving || gridMoving || drawerMoving
+        // Busy: something is moving, or the sheet/drawer is open. The banner is kept separate so an idle TV does
+        // not repaint its full-screen software layer at the UI's 60 Hz cadence.
+        boolean uiBusy = tilesMoving || statusMoving || heroMoving || drawerItemsMoving || gridMoving || drawerMoving
                 || sheetMoving || toastFading || heroFading || bgFading || nightMoving || sheetOpen || sheet.value > 0.001f
                 || drawerOpen || drawer.value > 0.001f || toast != null || !toasts.isEmpty();
+        boolean busy = animatedBanner != null || uiBusy;
         idle = !busy;
-        if (busy) Choreographer.getInstance().postFrameCallback(this);
+        if (busy) {
+            // During interaction the rest of the UI stays at 60 Hz; at rest the banner ticks at about 25 Hz.
+            if (animatedBanner != null && !uiBusy) Choreographer.getInstance().postFrameCallbackDelayed(this, 40);
+            else Choreographer.getInstance().postFrameCallback(this);
+        }
         else Choreographer.getInstance().postFrameCallbackDelayed(this, 1000);
     }
 

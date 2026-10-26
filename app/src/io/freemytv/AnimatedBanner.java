@@ -34,6 +34,10 @@ final class AnimatedBanner {
         paint.setColorFilter(filter);
     }
 
+    boolean shouldDraw(long now) {
+        return lastDrawAt == Long.MIN_VALUE || now - lastDrawAt >= MIN_FRAME_MS;
+    }
+
     static AnimatedBanner load(Context context, String assetName) {
         if (assetName == null || assetName.trim().isEmpty()) return null;
         String name = assetName.trim();
