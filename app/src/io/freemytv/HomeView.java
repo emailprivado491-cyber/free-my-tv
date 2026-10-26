@@ -362,6 +362,9 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         drawerLayer = new Layer(a, DRAWER);
         sheetLayer = new Layer(a, SHEET);
         toastLayer = new Layer(a, TOAST);
+        // Movie/GIF rendering can flash on some Android TV GPU drivers when drawn directly on a hardware canvas.
+        // Keep only the animated sky on a software layer; all interactive layers remain GPU accelerated below.
+        if (animatedBanner != null) sky.setLayerType(LAYER_TYPE_SOFTWARE, null);
         // Hardware layers on the GPU: only the one that changed is redrawn; moving, fading and scaling stay cheap.
         // Not on Android 8 to 11: on older GPUs (a Mi Box 3's Mali-450) redrawing and compositing a big layer on every
         // frame cost more than drawing straight to the screen (measured: focus on the picks 33 → 12 ms a frame, the

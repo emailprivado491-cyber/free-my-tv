@@ -131,6 +131,8 @@ by the existing readability veil. If the file is missing or unreadable, the laun
 gradient/recommendation background. On Android, the banner is rejected if it is larger than 8 MB, exceeds 1920×1080,
 or lasts longer than 10 seconds; frames are capped at approximately 30 fps. These are hard safety limits, not a target:
 for older TVs, use a 960×540 or 1280×720 GIF, 12–24 fps, and preferably under 5 MB.
+The banner is scaled with a center crop, but it cannot recover detail lost in a small source file: a 640×360 GIF will
+look soft on a 1920×1080 TV. For a sharp result, replace it with a source at 1280×720 or 1920×1080.
 
 ### The TMDB key
 
